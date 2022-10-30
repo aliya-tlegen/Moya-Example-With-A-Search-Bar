@@ -82,12 +82,12 @@
 				4D3F1AAD28C1266700B78C2D /* SceneDelegate.swift */,
 				4DB11AF828C137CC0088CC4B /* UserService.swift */,
 				4D3F1AAF28C1266700B78C2D /* ViewController.swift */,
+				4DB11AF428C136AB0088CC4B /* TableViewCell.swift */,
+				4DB11AF628C137AD0088CC4B /* User.swift */,
 				4D3F1AB128C1266700B78C2D /* Main.storyboard */,
 				4D3F1AB428C1267200B78C2D /* Assets.xcassets */,
 				4D3F1AB628C1267200B78C2D /* LaunchScreen.storyboard */,
 				4D3F1AB928C1267200B78C2D /* Info.plist */,
-				4DB11AF428C136AB0088CC4B /* TableViewCell.swift */,
-				4DB11AF628C137AD0088CC4B /* User.swift */,
 			);
 			path = UISearchController;
 			sourceTree = "<group>";

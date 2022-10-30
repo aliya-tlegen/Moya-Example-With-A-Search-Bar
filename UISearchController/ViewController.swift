@@ -14,10 +14,16 @@ class ViewController: UIViewController {
     // MARK: - Public Variables -
     
     var users = [User]()
-//    var dataArray = [User]()
     var filteredArray = [User]()
-    var shouldShowSearchResults = false
     var searchController: UISearchController!
+    
+    var isSearchBarEmpty: Bool {
+      return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    var isFiltering: Bool {
+        return searchController.isActive && !isSearchBarEmpty
+    }
     
     let userProvider = MoyaProvider<UserService>()
     
@@ -79,6 +85,13 @@ class ViewController: UIViewController {
         )
     }
     
+    func filterContentForSearchText(_ searchText: String) {
+        filteredArray = users.filter { (item: User) -> Bool in
+            return item.name.lowercased().contains(searchText.lowercased())
+        }
+        tableView.reloadData()
+    }
+    
     // MARK: - Actions -
     
     @objc func addUser() {
@@ -96,17 +109,16 @@ class ViewController: UIViewController {
     }
     
     func configureSearchController() {
-            searchController = UISearchController(searchResultsController: nil)
-            searchController.dimsBackgroundDuringPresentation = false
-            searchController.searchBar.placeholder = "Search here..."
-            searchController.searchBar.delegate = self
-            searchController.searchResultsUpdater = self
-            searchController.searchBar.sizeToFit()
-
-            self.tableView.tableHeaderView = searchController.searchBar
-        }
-
-    
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.searchBar.placeholder = "Search here..."
+        searchController.searchBar.delegate = self
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.sizeToFit()
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.obscuresBackgroundDuringPresentation = false
+        definesPresentationContext = true
+        self.tableView.tableHeaderView = searchController.searchBar
+    }
 }
 
 // MARK: - Extensions -
@@ -114,17 +126,15 @@ class ViewController: UIViewController {
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            if shouldShowSearchResults {
-                return filteredArray.count
-            }
-            return users.count
+        if isFiltering {
+            return filteredArray.count
         }
+        return users.count
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath) as! TableViewCell
-//        let user = users[indexPath.row]
-//        cell.configure(model: user)
-        if shouldShowSearchResults {
+        if isFiltering {
             cell.nameLabel.text = "\(filteredArray[indexPath.row].name)"
         }
         else {
@@ -132,10 +142,6 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         }
         return cell
     }
-    
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 70.0
-//    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let user = users[indexPath.row]
@@ -176,24 +182,12 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 extension ViewController: UISearchResultsUpdating, UISearchBarDelegate {
-    public func updateSearchResults(for searchController: UISearchController){
-            let searchString = searchController.searchBar.text
-//             Filter the data array and get only those countries that match the search text.
-        filteredArray = users.filter({ (user: User) -> Bool in
-            let nameText: NSString = user.name as NSString
-                return (nameText.range(of: searchString!, options: .caseInsensitive).location) != NSNotFound
-                })
-            tableView.reloadData()
-        }
-    
-    public func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        shouldShowSearchResults = true
-        tableView.reloadData()
+    public func updateSearchResults(for searchController: UISearchController) {
+        let searchBar = searchController.searchBar
+        filterContentForSearchText(searchBar.text!)
     }
 
-
     public func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        shouldShowSearchResults = false
         tableView.reloadData()
     }
 }

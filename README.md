@@ -1,7 +1,7 @@
 # Moya-Example-With-A-Search-Bar
 
 This small app consists of:
-- TableView 
+- UITableView 
 - UISearchController
 
 For practice purposes I used well-known JSONPlaceHolder (https://jsonplaceholder.typicode.com/) as an API 

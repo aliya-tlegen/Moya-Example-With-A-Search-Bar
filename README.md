@@ -4,15 +4,30 @@ This small app consists of:
 - UITableView 
 - UISearchController
 
-For practice purposes I used:
+# Tech Stack
 
-- Well-known JSONPlaceHolder (https://jsonplaceholder.typicode.com/) as an API;
-- SnapKit for making constraints;
-- and Moya Library (https://github.com/Moya/Moya) to work with networking requests: 
-  - .get
-  - .post
-  - .delete
-  - .put
+- [JSONPlaceHolder](https://jsonplaceholder.typicode.com/ "JSONPlaceHolder")
+- [SnapKit](https://github.com/SnapKit/SnapKit "SnapKit")
+- [Moya](https://github.com/Moya/Moya "Moya")
 
 https://user-images.githubusercontent.com/82160673/198894758-ed44d789-3816-488f-aa1d-28fb4aa3e9db.mov
 
+# Installation 
+
+To deploy this project run:
+
+```bash
+pod init
+```
+
+Insert the dependencies:
+
+```bash
+pod 'SnapKit'
+pod 'Moya'
+```
+Install the dependencies:
+
+```bash
+pod install
+```
